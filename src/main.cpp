@@ -6,7 +6,6 @@
  * @brief Main entry point for Advanced Hash Table Phone Directory System
  * @author Student ID: F23040111
  * @date December 17, 2025
- * 
  * This program implements a hash table-based phone directory system with:
  * - Modulo division hash function
  * - Linear probing for collision resolution
