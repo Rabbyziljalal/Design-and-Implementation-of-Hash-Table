@@ -1,0 +1,39 @@
+# Hash Table Implementation for Phone Directory
+
+This project implements a hash table for managing a unit's phone directory.
+
+## Features
+
+- Insert, search, delete records by username
+- Linear probing for collision resolution
+- Save/load hash table to/from file
+- Advanced: operations by phone number
+- Calculate search length
+
+## Build and Run
+
+Compile with g++:
+
+```
+g++ -Iinclude src/*.cpp -o hashtable
+```
+
+Run:
+
+```
+./hashtable
+```
+
+## Test
+
+Compile test:
+
+```
+g++ -Iinclude src/*.cpp test/test_cases.cpp -o test_hash
+```
+
+Run test:
+
+```
+./test_hash
+```

@@ -1,0 +1,36 @@
+#include "../include/hashtable.h"
+#include <iostream>
+#include <cassert>
+
+void testInsertAndSearch() {
+    HashTable ht(10);
+    Record rec("1234567890", "Alice", "123 Main St");
+    ht.insert(rec);
+
+    Record* found = ht.search("Alice");
+    assert(found != nullptr);
+    assert(found->phoneNumber == "1234567890");
+    assert(found->username == "Alice");
+    assert(found->address == "123 Main St");
+
+    std::cout << "Test insert and search passed." << std::endl;
+}
+
+void testDelete() {
+    HashTable ht(10);
+    Record rec("1234567890", "Alice", "123 Main St");
+    ht.insert(rec);
+    ht.remove("Alice");
+
+    Record* found = ht.search("Alice");
+    assert(found == nullptr);
+
+    std::cout << "Test delete passed." << std::endl;
+}
+
+int main() {
+    testInsertAndSearch();
+    testDelete();
+    std::cout << "All tests passed." << std::endl;
+    return 0;
+}

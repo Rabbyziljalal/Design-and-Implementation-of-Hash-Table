@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Directory System - Hash Table Implementation</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📞 Phone Directory System</h1>
+            <p class="subtitle">Hash Table Implementation (Modulo-Division + Linear Probing)</p>
+            <p class="student-id">Student ID: F23040111</p>
+        </header>
+
+        <div class="stats-panel">
+            <div class="stat-card">
+                <div class="stat-value" id="recordCount">0</div>
+                <div class="stat-label">Total Records</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="loadFactor">0%</div>
+                <div class="stat-label">Load Factor</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">45</div>
+                <div class="stat-label">Table Size</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="operations-panel">
+                <h1 class="operations-heading">OPERATIONS</h1>
+                
+                <div class="operation-buttons-grid">
+                    <button class="operation-main-btn" onclick="openInsertModal()">INSERT OPERATIONS</button>
+                    <button class="operation-main-btn" onclick="openSearchModal()">SEARCH OPERATION</button>
+                    <button class="operation-main-btn" onclick="openDeleteModal()">DELETE OPERATION</button>
+                    <button class="operation-main-btn" onclick="openDataModal()">DATA OPERATION</button>
+                </div>
+                
+                <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="handleFileImport(event)">
+            </div>
+
+            <div class="display-panel">
+                <button class="hash-table-heading-btn" onclick="openTableModal()">
+                    Hash Table Contents
+                </button>
+                <button class="hash-table-heading-btn" onclick="openStatsModal()" style="margin-top: 15px;">
+                    Show Statistics
+                </button>
+            </div>
+        </div>
+
+        <div id="messageBox" class="message-box"></div>
+    </div>
+
+    <!-- Statistics Modal -->
+    <div id="statsModal" class="modal">
+        <div class="modal-content modal-mini">
+            <div class="modal-header">
+                <h2>Hash Table Statistics</h2>
+                <span class="close-modal" onclick="closeStatsModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="statsDisplay" class="stats-display-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hash Table Display Modal -->
+    <div id="tableModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Hash Table Contents</h2>
+                <span class="close-modal" onclick="closeTableModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="table-controls">
+                    <button class="btn btn-small" onclick="refreshDisplay()">🔄 Refresh Display</button>
+                </div>
+                <div id="tableDisplay"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Operations Modal -->
+    <div id="dataModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Data Management</h2>
+                <span class="close-modal" onclick="closeDataModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="data-operations-grid">
+                    <button class="modal-operation-btn" onclick="loadSampleData(); closeDataModal();">
+                        <span class="btn-icon">📥</span>
+                        <span class="btn-text">Load Sample Data (30 records)</span>
+                    </button>
+                    
+                    <button class="modal-operation-btn" onclick="exportData(); closeDataModal();">
+                        <span class="btn-icon">💾</span>
+                        <span class="btn-text">Export Data</span>
+                    </button>
+                    
+                    <button class="modal-operation-btn" onclick="importData();">
+                        <span class="btn-icon">📂</span>
+                        <span class="btn-text">Import Data</span>
+                    </button>
+                    
+                    <button class="modal-operation-btn danger-btn" onclick="clearAllData(); closeDataModal();">
+                        <span class="btn-icon">🗑️</span>
+                        <span class="btn-text">Clear All Data</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Operations Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Delete Operation</h2>
+                <span class="close-modal" onclick="closeDeleteModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <button class="modal-operation-btn" onclick="showDeleteForm()">
+                    <span class="btn-icon">🗑️</span>
+                    <span class="btn-text">Delete</span>
+                </button>
+                
+                <div id="deleteFormContainer" style="display: none; margin-top: 20px;">
+                    <h3>Delete Record</h3>
+                    <div class="search-type">
+                        <label>
+                            <input type="radio" name="modalDeleteType" value="username" checked> Delete by Username
+                        </label>
+                        <label>
+                            <input type="radio" name="modalDeleteType" value="phone"> Delete by Phone Number
+                        </label>
+                    </div>
+                    <form id="modalDeleteForm" onsubmit="return handleModalDelete(event)">
+                        <div class="form-group">
+                            <label for="modalDeleteKey">Delete Key:</label>
+                            <input type="text" id="modalDeleteKey" required placeholder="Enter username or phone number">
+                        </div>
+                        <button type="submit" class="btn btn-danger">Delete Record</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Operations Modal -->
+    <div id="searchModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Search Operation</h2>
+                <span class="close-modal" onclick="closeSearchModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <button class="modal-operation-btn" onclick="showSearchForm()">
+                    <span class="btn-icon">🔍</span>
+                    <span class="btn-text">Search</span>
+                </button>
+                
+                <div id="searchFormContainer" style="display: none; margin-top: 20px;">
+                    <h3>Search Record</h3>
+                    <div class="search-type">
+                        <label>
+                            <input type="radio" name="modalSearchType" value="username" checked> Search by Username
+                        </label>
+                        <label>
+                            <input type="radio" name="modalSearchType" value="phone"> Search by Phone Number
+                        </label>
+                    </div>
+                    <form id="modalSearchForm" onsubmit="return handleModalSearch(event)">
+                        <div class="form-group">
+                            <label for="modalSearchKey">Search Key:</label>
+                            <input type="text" id="modalSearchKey" required placeholder="Enter username or phone number">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+                    <div id="modalSearchResult"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insert Operations Modal -->
+    <div id="insertModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Insert Operations</h2>
+                <span class="close-modal" onclick="closeInsertModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <button class="modal-operation-btn" onclick="showInsertForm()">
+                    <span class="btn-icon">➕</span>
+                    <span class="btn-text">Insert Record</span>
+                </button>
+                
+                <div id="insertFormContainer" style="display: none; margin-top: 20px;">
+                    <h3>Insert New Record</h3>
+                    <form id="modalInsertForm" onsubmit="return handleModalInsert(event)">
+                        <div class="form-group">
+                            <label for="modalInsertUsername">Username:</label>
+                            <input type="text" id="modalInsertUsername" required placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                            <label for="modalInsertPhone">Phone Number:</label>
+                            <input type="text" id="modalInsertPhone" required placeholder="Enter phone number">
+                        </div>
+                        <div class="form-group">
+                            <label for="modalInsertAddress">Address:</label>
+                            <textarea id="modalInsertAddress" required placeholder="Enter address"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Insert Record</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="hashtable.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
