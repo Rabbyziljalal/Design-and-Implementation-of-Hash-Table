@@ -1,10 +1,9 @@
 # Advanced Hash Table - Phone Directory System
 
-**Student ID:** F23040111  
+**Student ID:** 
 **Course:** Data Structures and Algorithms  
 **Topic:** Design and Implementation of Hash Table  
-**Date:** December 17, 2025
-
+**Date:** December 
 ---
 
 ## 📋 Project Overview
@@ -359,10 +358,10 @@ This is an academic project for educational purposes.
 
 ## 👤 Author
 
-**Student ID:** F23040111  
+**Student ID:**
 **Course:** Data Structures and Algorithms  
 **Institution:** [Your Institution]  
-**Date:** December 17, 2025
+**Date:** December 
 
 ---
 
@@ -375,5 +374,6 @@ For questions or issues:
 
 ---
 
-**Note:** This project fully implements both basic and advanced requirements as specified in the course design task. All features have been tested and verified to work correctly.#   D e s i g n - a n d - I m p l e m e n t a t i o n - o f - H a s h - T a b l e  
+**Note:** This project fully implements both basic and advanced requirements as specified in the course design task. All features have been tested and verified to work correctly.#   D e s i g n - a n d - I m p l e m e n t a t i o n - o f - H a s h - T a b l e 
+ 
  
